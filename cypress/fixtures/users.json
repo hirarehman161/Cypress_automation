@@ -1,0 +1,17 @@
+{
+    "T_Admin":
+    {
+      "email" :"farhan@cratus.uk",
+      "password" :"Alpha@1234"
+    },
+    "S_Admin":
+    {
+      "email" :"mohammadtalha1@gmail.com",
+      "password" :"Alpha@1234"
+    },
+    "NOC":
+    {
+      "email" :"disalo4535@bflcafe.com",
+      "password" :"Alpha@1234"
+    }
+}
