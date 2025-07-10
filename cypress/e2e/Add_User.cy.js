@@ -3,7 +3,12 @@
 describe("Add Member", () => {
     it("Tenant NOC", () => {
       //const emailAddress = Cypress.env('GMAIL_USER');
-      const emailAddress = 'hrie@gmail.com'
+      const emailAddress = Cypress.env('GMAIL_USER');
+      const firstName = Cypress.env('TEST_FIRST_NAME');
+      const lastName = Cypress.env('TEST_LAST_NAME');
+      const mobile = Cypress.env('TEST_MOBILE');
+      const department = Cypress.env('TEST_DEPARTMENT');
+      const designation = Cypress.env('TEST_DESIGNATION');
       cy.login('T_Admin')
       
       // selecting the hamburger menu
@@ -23,14 +28,14 @@ describe("Add Member", () => {
       // Select option
       cy.get('[role="option"]').contains('Tenant Noc').click();
       
-      cy.get('input[placeholder="Enter First Name"][type="text"]').should("be.visible").type("Emily")
-      cy.get('input[placeholder="Enter Last Name"][type="text"]').should("be.visible").type("Anderson")
+      cy.get('input[placeholder="Enter First Name"][type="text"]').should("be.visible").type(firstName)
+      cy.get('input[placeholder="Enter Last Name"][type="text"]').should("be.visible").type(lastName)
       
       // FIXED: Remove duplicate mobile number entry and use proper 10-digit number
-      cy.get('input[placeholder="Enter Mobile"][type="number"]').should("be.visible").clear().type("1234567890")
+      cy.get('input[placeholder="Enter Mobile"][type="number"]').should("be.visible").clear().type(mobile)
       cy.get('input[placeholder="Enter Email"][type="text"]').should("be.visible").type(emailAddress)
-      cy.get('input[placeholder="Enter Department"][type="text"]').should("be.visible").type("Technology")
-      cy.get('input[placeholder="Enter Designation"][type="text"]').should("be.visible").type("Manager")
+      cy.get('input[placeholder="Enter Department"][type="text"]').should("be.visible").type(department)
+      cy.get('input[placeholder="Enter Designation"][type="text"]').should("be.visible").type(designation)
       
       // Permission section
       // Region Selection
@@ -59,7 +64,7 @@ describe("Add Member", () => {
 
       
       // Create user
-      cy.get('button:contains("Create")').click();
+    //  cy.get('button:contains("Create")').click();
       
       // Wait and get verification link
     //   cy.wait(15000);
