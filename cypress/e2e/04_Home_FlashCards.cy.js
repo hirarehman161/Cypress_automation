@@ -47,10 +47,7 @@
   
     it('Verifies DB connection and prints query result', () => {
   
-      cy.visit("https://qa.cratus.softoo.co/login"); 
-      cy.get("input[id=':r0:']").type("powagej732@cironex.com"); 
-      cy.get("input[id=':r2:']").type("Alpha!1234"); 
-      cy.get("button[type='submit']").click();
+    cy.login('tenantAdmin');
       cy.wait(3000)
      // Getting the total cabinets from the DB
       cy.task( 'READFROMDB', {

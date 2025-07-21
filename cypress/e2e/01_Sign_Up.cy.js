@@ -4,8 +4,7 @@ describe("User Creation and Email Verification", () => {
     const emailAddress = Cypress.env('GMAIL_USER');
 
     // Step 1: Login and navigate
-    cy.visit("https://dev.cratus.softoo.co/login");
-    cy.login("S_Admin"); // assumes you have a cy.login command
+    cy.login("systemAdmin"); // assumes you have a cy.login command
 
     // Step 2: Fill form and send invite
     cy.get("input[id=':r2:']").type("System");
@@ -52,8 +51,8 @@ describe("User Creation and Email Verification", () => {
     const emailAddress = Cypress.env('GMAIL_USER');
 
     // Step 1: Login and navigate
-    cy.visit("https://dev.cratus.softoo.co/login");
-    cy.login("S_Admin"); // assumes you have a cy.login command
+    
+    cy.login("tenantAdmin"); // assumes you have a cy.login command
 
     // Step 2: Fill form and send invite
     cy.get("input[id=':r2:']").type("Tenant");

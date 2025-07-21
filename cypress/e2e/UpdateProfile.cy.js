@@ -33,7 +33,7 @@ describe('Update User Profile', () => {
   
       // Click the Update button
       cy.contains('Update').click();
-      cy.get('input[type="password"]').type("Alpha!1234")
+      cy.get('input[type="password"]').type("Alpha@1234")
       cy.xpath('//button[contains(text(), "Confirm")]').click()
       
      //Assertions

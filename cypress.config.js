@@ -272,19 +272,37 @@ module.exports = defineConfig({
   e2e: {
     taskTimeout: 120000,
     setupNodeEvents(on, config) {
+      // Merge environment variables from cypress.env.json and process.env
+      const dbConfig = {
+        user: String(config.env.DB_USER || process.env.DB_USER),
+        host: String(config.env.DB_HOST || process.env.DB_HOST),
+        database: String(config.env.DB_NAME || process.env.DB_NAME),
+        password: String(config.env.DB_PASS || process.env.DB_PASS),
+        port: Number(config.env.DB_PORT || process.env.DB_PORT || 5432)
+      };
+
+      // Verify database configuration
+      console.log('Database Configuration:', {
+        ...dbConfig,
+        password: dbConfig.password ? '*****' : 'MISSING' // Hide actual password
+      });
+
       on("task", {
-        READFROMDB: async ({ dbConfig, sql }) => {
+        // Database query task
+        READFROMDB: async ({ sql }) => {
           const client = new pg.Pool(dbConfig);
           try {
             const result = await client.query(sql);
-            await client.end();
             return result.rows;
           } catch (error) {
             console.error("Database query error:", error);
             throw error;
+          } finally {
+            await client.end();
           }
         },
-        
+
+        // Email tasks
         getEmailsViaIMAP: (searchCriteria = ['UNSEEN']) => {
           return new Promise((resolve, reject) => {
             const timeoutId = setTimeout(() => {
@@ -404,14 +422,9 @@ module.exports = defineConfig({
           });
         }
       });
-    },
-    
-    DB: {
-      user: "cratus",
-      host: "52.22.89.189",
-      database: "cratus",
-      password: "Cratus@Softoo",
-      port: "5432"
+
+      // Return the updated config object
+      return config;
     }
   }
 });

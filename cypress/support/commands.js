@@ -33,41 +33,33 @@ import 'cypress-file-upload';
 /// <reference types= 'cypress-iframe'/>
 /// <reference types= 'cypress-file-upload'/>
 
-Cypress.Commands.add('login', (userkey) =>
-{
-    cy.fixture('users').then((users)=>{
-        const user = users[userkey]
-        if (user)
-        {
-            cy.visit("https://dev.cratus.softoo.co/login");
-            cy.get('input[placeholder="Enter Email Address"][type="email"][name="email"]').type(user.email);
-            cy.get('input[placeholder="Enter Password"][type="password"][name="password"]').type(user.password);
-            cy.get("button[type='submit']").click();
-            cy.wait(6000)
-        } else{
-            throw new Error(`User with key ${userKey} not found`);
-
-        }
-
-    })
+Cypress.Commands.add('login', (userType) => {
+    let email, password;
+    
+    switch(userType) {
+        case 'tenantAdmin':
+            email = Cypress.env('TenantAdmin_email');
+            password = Cypress.env('TenantAdmin_Password');
+            break;
+        case 'systemAdmin':
+            email = Cypress.env('SystemAdmin_email');
+            password = Cypress.env('Password');
+            break;
+        default:
+            throw new Error(`Invalid user type: ${userType}. Use 'tenantAdmin' or 'systemAdmin'`);
+    }
+    
+    if (!email || !password) {
+        throw new Error(`Credentials not found for user type: ${userType}`);
+    }
+    
+    cy.visit(Cypress.env('baseURL'));
+    cy.get('input[placeholder="Enter Email Address"][type="email"]').type(email);
+    cy.get('input[type="password"][placeholder="Enter Password"]').type(password);
+    cy.get("button[type='submit']").click();
+    cy.wait(6000);
 })
 
-// Gmail commands
-// Cypress.Commands.add('getEmailsViaIMAP', (searchCriteria = ['UNSEEN']) => {
-//   return cy.task('getEmailsViaIMAP', searchCriteria);
-  
-// });
-
-// Cypress.Commands.add('getLatestEmailBySubject', (subject) => {
-//   return cy.task('getLatestEmailBySubject', subject);
-// });
-
-// // Example: Get latest email containing specific text
-// Cypress.Commands.add('getLatestEmail', () => {
-//   return cy.task('getEmailsViaIMAP', ['ALL']).then((emails) => {
-//     return emails.length > 0 ? emails[emails.length - 1] : null;
-//   });
-// });
 
 // Gmail commands
 Cypress.Commands.add('getEmailsViaIMAP', (searchCriteria = ['UNSEEN']) => {
