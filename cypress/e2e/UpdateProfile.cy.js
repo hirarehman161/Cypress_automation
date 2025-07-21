@@ -1,7 +1,7 @@
 describe('Update User Profile', () => {
     beforeEach(() => {
 
-      cy.login("T_Admin");
+      cy.login("tenantAdmin");
       cy.wait(10000);
       cy.get('svg[data-testid="PersonIcon"]').click()
       cy.contains('My Profile').click(); // Adjust the button text or selector if needed
@@ -16,16 +16,19 @@ describe('Update User Profile', () => {
 
       cy.xpath("(//button[@type='button'])[2]").should('exist').should('be.enabled').click()
        
-      cy.get('button').contains('Upload').then(() => { cy.get('input[type="file"]').attachFile('barcode.png'); });
+      //cy.get('button').contains('Upload').then(() => { cy.get('input[type="file"]').attachFile('barcode.png'); });
 
       // Update the First Name
-      cy.get('input[name="first_name"]').clear().type('Emily');
+      const firstNameInput = Math.random().toString(36).substring(2, 7);
+      cy.get('input[name="first_name"]').clear().type(firstNameInput); // Random first name for uniqueness
       
       // Update the Last Name
-      cy.get('input[name="last_name"]').clear().type('Anderson');
+      const lastNameInput = Math.random().toString(36).substring(2, 7);
+      cy.get('input[name="last_name"]').clear().type(lastNameInput); // Random last name for uniqueness
   
       // Update the Mobile Number
-      cy.get('input[type="number"]').clear().type('1234567890');
+      const mobileNumberInput = Math.floor(Math.random() * 1000000000).toString();
+      cy.get('input[type="number"]').clear().type(mobileNumberInput); // Random mobile number
   
       cy.get('input[name="designation"]').should("be.disabled");
       cy.get('input[name="department"][disabled]').should("be.disabled")
@@ -37,8 +40,8 @@ describe('Update User Profile', () => {
       cy.xpath('//button[contains(text(), "Confirm")]').click()
       
      //Assertions
-     cy.get("p.userNameText").should("be.text",'Emily Anderson')
-     cy.get("p.userInfoText").should("be.contain",'1234567890')
+     cy.get("p.userNameText").should("be.text",'' + firstNameInput + ' ' + lastNameInput + '');
+     cy.get("p.userInfoText").should("be.contain", mobileNumberInput);
 
 
       
